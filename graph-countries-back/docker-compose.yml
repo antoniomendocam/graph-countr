@@ -1,0 +1,73 @@
+version: "3.6"
+
+services:
+
+    redis:
+        image: redis:6.0.9
+        command: redis-server --requirepass ZxIeqF92Y28Xf7X4CxUDSBmxgadcZWtM
+        ports:
+        - 6379:6379
+
+    redis-commander:
+        image: rediscommander/redis-commander:latest
+        environment:
+        - REDIS_HOST=redis
+        - REDIS_PASSWORD=ZxIeqF92Y28Xf7X4CxUDSBmxgadcZWtM
+        ports:
+        - 8081:8081
+        depends_on:
+          - redis
+
+    consul:
+        image: consul
+        ports:
+        - 8500:8500
+        command: agent -ui -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+        volumes:
+        - ./consul/config/consul-config.json:/consul/config/config.json
+        - ./consul/data:/consul/data
+
+    # elasticsearch:
+    #     image: elasticsearch:7.9.3
+    #     ports:
+    #     - 9200:9200
+    #     - 9300:9300
+    #     environment:
+    #       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    #       ELASTIC_PASSWORD: changeme
+    #       discovery.type: single-node
+    #     volumes:
+    #     - ./esdata:/usr/share/elasticsearch/data
+  
+    # kibana:
+    #     image: kibana:7.9.3
+    #     ports:
+    #     - 5601:5601
+    #     environment:
+    #       #SERVER_NAME: kibana.example.org
+    #       ELASTICSEARCH_URL: http://elasticsearch:9300
+    #     depends_on:
+    #       - elasticsearch
+
+    # rabbitmq:
+    #     image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+    #     volumes:
+    #       - rabbitmq_data:/cable/rabbitmq
+    #     ports:
+    #       - '4369:4369'
+    #       - '5672:5672'
+    #       - '25672:25672'
+    #       - '15672:15672'    
+    #     restart: always
+
+    # ravendb:
+    #     image: ravendb/ravendb
+    #     volumes:
+    #       - raven_data:/cable/ravendb
+    #     ports:
+    #       - '8080:8080'
+    #       - '38888:38888'
+    #     restart: always
+
+# volumes:
+#     rabbitmq_data:

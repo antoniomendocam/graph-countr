@@ -1,0 +1,50 @@
+{
+  "name": "countries",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run build-babel",
+    "deploy": "npm run build && gcloud app deploy --quiet",
+    "logs": "gcloud app logs read",
+    "start": "node ./build/graphql/index.js",
+    "dev": "npm run build && npm start",
+    "dataScraping": "babel-node -- ./src/dataScraping/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "apollo-boost": "^0.4.9",
+    "apollo-server": "^2.22.2",
+    "cheerio": "^1.0.0-rc.3",
+    "cheerio-tableparser": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.0.0",
+    "graphql-import": "^1.0.2",
+    "graphql-tag": "^2.10.3",
+    "html2json": "^1.0.2",
+    "neo4j-driver": "4.0.2",
+    "neo4j-graphql-js": "^2.13.0",
+    "node-fetch": "^2.6.1",
+    "tabletojson": "^2.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "graphql/*"
+    ],
+    "ext": "js, graphql",
+    "delay": 1000
+  }
+}
